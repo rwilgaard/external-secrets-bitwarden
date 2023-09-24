@@ -10,6 +10,10 @@ RUN apt update && \
     mv bw /usr/local/bin/bw && \
     rm -rfv *.zip
 
-COPY entrypoint.sh /
+RUN groupadd -g 3001 bw && useradd -m -u 3000 -g bw bw
+COPY entrypoint.sh /app/
+RUN chown -R bw:bw /app
+RUN chmod u+x /app/entrypoint.sh
 
-CMD ["/entrypoint.sh"]
+USER bw
+CMD ["/app/entrypoint.sh"]
